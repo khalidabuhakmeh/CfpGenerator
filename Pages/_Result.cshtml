@@ -1,0 +1,19 @@
+@model CfpGenerator.Pages.Index
+
+<div id="cfp">
+    <div class="content">
+        <h2 title="title">Template</h2>
+        <div contenteditable="true">
+            @Model.Template.Text
+        </div>
+    </div>
+    @if (Model.Result is {})
+    {
+        <div class="content">
+            <h2 title="title">Results</h2>
+            <div>
+                @Html.Raw(Model?.Result)
+            </div>
+        </div>
+    }
+</div>

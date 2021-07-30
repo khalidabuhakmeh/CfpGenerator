@@ -1,0 +1,40 @@
+@model CfpGenerator.Pages.Index
+
+<div id="cfpForm" class="columns">
+    <div class="column is-8">
+        @await Html.PartialAsync("_Result")
+    </div>
+    <div class="column is-3 is-offset-1">
+        <div class="field">
+            <label class="label">Template *</label>
+            <div class="select is-medium">
+                <select asp-for="SelectedTemplateId" asp-items="Model.Templates"
+                        hx-get="@Url.Page("Index")" hx-target="#cfpForm" hx-swap="outerHTML" hx-indicator=".htmx-indicator">
+                </select>
+            </div>
+        </div>
+        <form hx-post="@Url.Page("Index")" hx-target="#cfp" hx-swap="outerHTML" hx-indicator=".htmx-indicator">
+            <input type="hidden" asp-for="SelectedTemplateId"/>
+            @foreach (var field in Model.Template.Placeholders)
+            {
+                <div class="field">
+                    <label class="label">@CultureInfo.InvariantCulture.TextInfo.ToTitleCase(field)</label>
+                    <div class="is-medium">
+                        <input class="input is-medium" name="@field" autocomplete="off"/>
+                    </div>
+                </div>
+            }
+            <button class="button is-success" type="submit">
+                <span class="icon is-small">
+                    <i class="fas fa-recycle"></i>
+                </span>
+                <span>Generate</span>
+            </button>
+            <span class="htmx-indicator">
+                <i class="fa fa-spinner fa-spin fa-2x"></i>
+                <span class="sr-only">Generating...</span>
+            </span>
+            @Html.AntiForgeryToken()
+        </form>
+    </div>
+</div>
